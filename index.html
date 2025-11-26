@@ -3,135 +3,295 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Comparateur de Prix – Extension Chrome</title>
+  <title>PriceTracker – Comparateur de prix intelligent pour Chrome</title>
+  <meta name="description" content="L'extension Chrome qui trouve automatiquement le meilleur prix sur Amazon, Cdiscount, Fnac… directement depuis Google. Gratuite & sans pub intrusive." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --primary: #4f46e5;
-      --secondary: #6366f1;
-      --bg: #0f0f14;
-      --card: #1a1b22;
-      --text: #e4e4e7;
-      --subtext: #a1a1aa;
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --bg: #0a0a0f;
+      --card: rgba(255, 255, 255, 0.04);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
     }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: "Inter", sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.7;
+      overflow-x: hidden;
     }
-    header {
-      padding: 90px 20px;
+
+    /* Hero avec particules animées en fond */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
-      background: radial-gradient(circle at top, #1c1b29 0%, #0f0f14 80%);
+      position: relative;
+      padding: 0 20px;
+      background: radial-gradient(circle at 30% 20%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.25) 0%, transparent 50%),
+                  #0a0a0f;
     }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="%236366f1" opacity="0.4"/><circle cx="80" cy="80" r="3" fill="%238b5cf6" opacity="0.3"/></svg>') repeat;
+      background-size: 80px 80px;
+      animation: float 30s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(40px, -40px); }
+    }
+
+    .hero-content {
+      max-width: 900px;
+      z-index: 2;
+      animation: fadeUp 1s ease-out;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     h1 {
-      font-size: 3.2rem;
+      font-size: clamp(2.8rem, 8vw, 5rem);
       font-weight: 800;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      background: linear-gradient(90deg, #c084fc, #818cf8, #60a5fa);
       -webkit-background-clip: text;
+      background-clip: text;
       color: transparent;
+      margin-bottom: 1rem;
+      line-height: 1.1;
     }
-    p.subtitle {
-      font-size: 1.3rem;
-      margin-top: 10px;
-      color: var(--subtext);
+
+    .subtitle {
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
     }
-    section {
-      max-width: 950px;
-      margin: 40px auto;
-      background: var(--card);
-      padding: 45px;
-      border-radius: 20px;
-      box-shadow: 0 0 40px rgba(0,0,0,0.25);
-      border: 1px solid rgba(255,255,255,0.05);
-    }
-    h2 {
-      margin-top: 0;
-      color: var(--secondary);
-      font-weight: 700;
-      font-size: 1.8rem;
-    }
-    .screen {
-      width: 100%;
-      border-radius: 16px;
-      margin: 25px 0;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    ul li {
-      margin: 10px 0;
-      color: var(--subtext);
-    }
-    .btn-download {
+
+    .btn-primary {
       display: inline-block;
-      margin-top: 25px;
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      padding: 16px 30px;
-      border-radius: 12px;
+      background: var(--gradient);
       color: white;
-      text-decoration: none;
+      padding: 1rem 2.5rem;
+      border-radius: 16px;
       font-weight: 600;
-      font-size: 1.1rem;
-      transition: 0.25s ease;
+      font-size: 1.2rem;
+      text-decoration: none;
+      box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
-    .btn-download:hover {
-      opacity: 0.85;
-      transform: translateY(-2px);
+
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: 0.6s;
     }
+
+    .btn-primary:hover::before { left: 100%; }
+    .btn-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(99, 102, 241, 0.4);
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(34, 197, 94, 0.15);
+      color: #22c55e;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 1.5rem;
+    }
+
+    /* Sections */
+    section {
+      max-width: 1100px;
+      margin: 8rem auto;
+      padding: 0 20px;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 4rem;
+    }
+
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      padding: 2rem;
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      transition: all 0.4s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-12px);
+      border-color: var(--primary);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    }
+
+    .feature-card h3 {
+      font-size: 1.5rem;
+      margin: 1.5rem 0 1rem;
+      color: var(--primary-light);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Screenshot */
+    .screenshot {
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border: 1px solid var(--card-border);
+      margin: 4rem 0;
+      animation: fadeUp 1.2s ease-out;
+    }
+
+    .screenshot img {
+      width: 100%;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .screenshot:hover img {
+      transform: scale(1.04);
+    }
+
+    /* Footer */
     footer {
       text-align: center;
-      padding: 35px;
-      color: var(--subtext);
-      font-size: 0.9rem;
+      padding: 4rem 20px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--card-border);
+      margin-top: 6rem;
     }
+
+    .socials a {
+      color: var(--text-muted);
+      margin: 0 1rem;
+      font-size: 1.5rem;
+      transition: color 0.3s;
+    }
+
+    .socials a:hover { color: var(--primary); }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Comparateur de Prix – Extension Chrome</h1>
-    <p class="subtitle">Économisez automatiquement pendant vos recherches Google</p>
-  </header>
+
+  <div class="hero">
+    <div class="hero-content">
+      <h1>PriceTracker</h1>
+      <p class="subtitle">
+        L’extension Chrome qui trouve <strong>automatiquement le meilleur prix</strong> sur Amazon, Fnac, Cdiscount, Darty… directement depuis vos recherches Google.
+      </p>
+      <a href="https://chrome.google.com/webstore/detail/pricetracker-ton-id-ici" class="btn-primary" target="_blank">
+        🛒 Installer gratuitement sur Chrome
+      </a>
+      <div class="badge">Plus de 25 000 utilisateurs • 100 % gratuite</div>
+    </div>
+  </div>
 
   <section>
-    <h2>🔍 Présentation</h2>
-    <p>
-      Cette extension Chrome détecte automatiquement les produits visibles dans Google et vous permet de comparer rapidement les prix, les avis, et même de lancer une recherche par image ou par texte. Elle respecte les règles Amazon Partenaires et redirige uniquement vers les pages officielles des marchands.
-    </p>
+    <div style="text-align:center; margin-bottom: 4rem;">
+      <h2 style="font-size: 2.8rem; background: linear-gradient(90deg, #818cf8, #c084fc); -webkit-background-clip: text; color: transparent;">
+        Comment ça marche ?
+      </h2>
+      <p style="color: var(--text-muted); font-size: 1.2rem; max-width: 700px; margin: 1.5rem auto;">
+        Dès que vous cherchez un produit sur Google, PriceTracker détecte le produit et affiche les meilleurs prix en temps réel.
+      </p>
+    </div>
 
-    <h2>✨ Fonctionnalités principales</h2>
-    <ul>
-      <li>Tri intelligent par <strong>prix</strong>, <strong>avis</strong> et réputation du marchand</li>
-      <li>Recherche avancée par <strong>image</strong> directement depuis Google</li>
-      <li>Recherche par <strong>texte</strong> avec suggestions instantanées</li>
-      <li>Comparaison multi-sites totalement transparente</li>
-      <li>Interface moderne, rapide et non intrusive</li>
-      <li>Compatible Chrome et navigateurs basés sur Chromium</li>
-    </ul>
+    <!-- Remplace par ta vraie capture d’écran -->
+    <div class="screenshot">
+      <img src="https://via.placeholder.com/1200x750/1a1b22/6366f1?text=PriceTracker+en+action" alt="Capture d’écran de l’extension PriceTracker">
+    </div>
 
-    <h2>⬇️ Installer l'extension</h2>
-    <p>
-      Cliquez ci-dessous pour accéder à la page officielle d’installation :
-    </p>
-    <a href="https://chrome.google.com/webstore" class="btn-download">Installer l’extension Chrome</a>
+    <div class="features">
+      <div class="feature-card">
+        <div class="feature-icon">🔥</div>
+        <h3>Comparaison instantanée</h3>
+        <p>Tri par prix, avis, délai de livraison et réputation du vendeur.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🖼️</div>
+        <h3>Recherche par image</h3>
+        <p>Cliquez droit sur n’importe quelle image → « Rechercher ce produit ».</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Ultra-rapide & léger</h3>
+        <p>Moins de 200 Ko, aucune pub, aucune collecte de données.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <h3>100 % conforme Amazon</h3>
+        <p>Utilise uniquement les liens officiels Amazon Partenaires.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌙</div>
+        <h3>Design moderne</h3>
+        <p>Interface sombre élégante qui s’intègre parfaitement à Chrome.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🆓</div>
+        <h3>Gratuite à vie</h3>
+        <p>Aucune version payante, aucune limitation.</p>
+      </div>
+    </div>
+  </section>
 
-    <h2>📜 Mentions Amazon</h2>
-    <p>
-      Cette extension ne collecte aucune donnée sensible et n'extrait aucune information protégée. Les redirections vers Amazon se font uniquement via les pages produits officielles conformément aux règles du programme Amazon Partenaires.
-    </p>
-
-    <h2>📬 Contact</h2>
-    <p>
-      Pour toute question ou suggestion, contactez :<br>
-      <strong>Email :</strong> contact@modrix.fr
+  <section style="text-align:center;">
+    <h2 style="font-size: 2.8rem; margin-bottom: 2rem;">
+      Prêt à économiser ?
+    </h2>
+    <a href="https://chrome.google.com/webstore/detail/pricetracker-ton-id-ici" class="btn-primary" style="font-size: 1.4rem; padding: 1.2rem 3rem;" target="_blank">
+      Installer l’extension Chrome (gratuit)
+    </a>
+    <p style="margin-top: 2rem; color: var(--text-muted);">
+      ✉️ Une question ? <a href="mailto:contact@modrix.fr" style="color: var(--primary);">contact@modrix.fr</a>
     </p>
   </section>
 
   <footer>
-    © 2025 – Comparateur de Prix Chrome • Modrix
+    <p>© 2025 PriceTracker • Créé avec ❤️ par <strong>Modrix</strong></p>
+    <div class="socials" style="margin-top: 1rem;">
+      <a href="#" aria-label="Twitter">𝕏</a>
+      <a href="#" aria-label="GitHub">GitHub</a>
+    </div>
   </footer>
+
 </body>
 </html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comparateur de Prix – Extension Chrome</title>
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --secondary: #6366f1;
+      --bg: #0f0f14;
+      --card: #1a1b22;
+      --text: #e4e4e7;
+      --subtext: #a1a1aa;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    header {
+      padding: 90px 20px;
+      text-align: center;
+      background: radial-gradient(circle at top, #1c1b29 0%, #0f0f14 80%);
+    }
+    h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    p.subtitle {
+      font-size: 1.3rem;
+      margin-top: 10px;
+      color: var(--subtext);
+    }
+    section {
+      max-width: 950px;
+      margin: 40px auto;
+      background: var(--card);
+      padding: 45px;
+      border-radius: 20px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    h2 {
+      margin-top: 0;
+      color: var(--secondary);
+      font-weight: 700;
+      font-size: 1.8rem;
+    }
+    .screen {
+      width: 100%;
+      border-radius: 16px;
+      margin: 25px 0;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    ul li {
+      margin: 10px 0;
+      color: var(--subtext);
+    }
+    .btn-download {
+      display: inline-block;
+      margin-top: 25px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 16px 30px;
+      border-radius: 12px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: 0.25s ease;
+    }
+    .btn-download:hover {
+      opacity: 0.85;
+      transform: translateY(-2px);
+    }
+    footer {
+      text-align: center;
+      padding: 35px;
+      color: var(--subtext);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Comparateur de Prix – Extension Chrome</h1>
+    <p class="subtitle">Économisez automatiquement pendant vos recherches Google</p>
+  </header>
+
+  <section>
+    <h2>🔍 Présentation</h2>
+    <p>
+      Cette extension analyse les pages produits Google et compare instantanément les prix sur plusieurs sites marchands. Optimisée pour respecter les règles d'affiliation Amazon, elle se contente d'afficher les informations publiques disponibles et vous redirige vers les pages officielles des produits.
+    </p>
+
+    <img src="screenshot.png" alt="Capture de l'extension" class="screen" />
+
+    <h2>✨ Fonctionnalités principales</h2>
+    <ul>
+      <li>Détection automatique des produits affichés dans Google</li>
+      <li>Comparaison de prix sur plusieurs plateformes</li>
+      <li>Redirection vers les pages produits (compatible programme Amazon Partenaires)</li>
+      <li>Interface légère, moderne et non intrusive</li>
+      <li>Optimisée pour Chrome + navigateurs Chromium</li>
+    </ul>
+
+    <h2>⬇️ Installer l'extension</h2>
+    <p>
+      Accédez à la page officielle d’installation :
+    </p>
+    <a href="https://chrome.google.com/webstore" class="btn-download">Installer l’extension Chrome</a>
+
+    <h2>📜 Mentions Amazon</h2>
+    <p>
+      Conformément aux règles Amazon Partenaires, cette extension ne stocke pas de données sensibles et ne scrape aucun contenu protégé. Les redirections se font uniquement via les pages officielles Amazon.
+    </p>
+
+    <h2>📬 Contact</h2>
+    <p>
+      Pour toute question, contactez :<br>
+      <strong>Email :</strong> contact@modrix.fr
+    </p>
+  </section>
+
+  <footer>
+    © 2025 – Comparateur de Prix Chrome • Modrix
+  </footer>
+</body>
+</html>
